@@ -1,6 +1,7 @@
 # 工厂碳排放计算器
 
 按 GHG Protocol 口径，计算工厂的 Scope 1（直接排放）与 Scope 2（外购电力间接排放）。
+<img width="820" height="1034" alt="image" src="https://github.com/user-attachments/assets/2d14e69b-bc82-4cff-bc7f-5148f688c8eb" />
 
 ## 它解决什么问题
 
