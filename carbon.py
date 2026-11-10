@@ -118,6 +118,11 @@ df = pd.DataFrame(
 )
 st.subheader("各能源排放量")
 st.bar_chart(df, x="能源", y="排放量", alt="各能源排放量对比")
+if total > 0:
+    st.caption(
+        f"电力（Scope 2）占总排放 {scope2 / total * 100:.0f}%，"
+        "是主要排放源，所以柱状图上燃料那三根看起来很短。"
+    )
 
 trees = total * 1000 / 18.3
 st.caption(
@@ -125,7 +130,50 @@ st.caption(
     "（按每棵每年 18.3 kg 估算，仅作直观参考，不用于核算）"
 )
 
-# 6. 因子来源：让每个数字都能追溯
+# 6. 月度趋势：按月填用量，看全年排放走势
+st.divider()
+st.subheader("月度排放趋势")
+st.caption(
+    "按月的用量填进表格，折线图会自动出来。"
+    "工厂的碳盘查通常按月报送，年度总数只是汇总。"
+)
+
+months = [f"{m}月" for m in range(1, 13)]
+col_table, col_chart = st.columns([1.2, 1])
+
+with col_table:
+    monthly_input = st.data_editor(
+        pd.DataFrame({"月份": months, **{name: [0.0] * 12 for name in ENERGY}}),
+        hide_index=True,
+        width="stretch",
+        height=372,
+        row_height=28,
+        num_rows="fixed",
+    )
+
+monthly_emissions = 0
+for name in ENERGY:
+    monthly_emissions = monthly_emissions + monthly_input[name] * factor_for(name) / 1000
+
+with col_chart:
+    if monthly_emissions.sum() > 0:
+        # 横轴用数字月份，否则 Vega 会按字符串排序（10月排在 2月 前面）
+        chart_df = pd.DataFrame(
+            {"月": list(range(1, 13)), "排放量（tCO2e）": monthly_emissions.to_numpy()}
+        )
+        st.line_chart(
+            chart_df,
+            x="月",
+            y="排放量（tCO2e）",
+            x_label="月份",
+            height=390,
+            alt="月度排放趋势",
+        )
+        st.caption(f"12 个月合计：{monthly_emissions.sum():.1f} tCO2e")
+    else:
+        st.info("在左侧表格里填几个月的用量，折线图就会出来。")
+
+# 7. 因子来源：让每个数字都能追溯
 with st.expander("排放因子与数据来源"):
     factor_df = pd.DataFrame(
         [
