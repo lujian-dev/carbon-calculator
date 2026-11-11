@@ -1,5 +1,7 @@
 # 工厂碳排放计算器
 
+🔗 **在线体验**：[carbon-calc-lujian.streamlit.app](https://carbon-calc-lujian.streamlit.app)
+
 按 GHG Protocol 口径，计算工厂的 Scope 1（直接排放）与 Scope 2（外购电力间接排放）。
 <img width="1227" height="668" alt="c98a77fe-f417-4f5a-ab7b-500d8ebc5333" src="https://github.com/user-attachments/assets/3288b15b-144f-4a44-abbd-9d8d63e63f3c" />
 <img width="1232" height="581" alt="b14edfb3-cfe7-4714-bef9-1487b50e50c0" src="https://github.com/user-attachments/assets/2195ba26-c2b8-4d90-8cda-f636fa18e28a" />
